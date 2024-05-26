@@ -29,3 +29,6 @@ The **Simple To-Do List** application helps you manage daily tasks effortlessly 
 - **Add a Task:** Use the form to input a task description and submit it.
 - **View Tasks:** All tasks are displayed in a list.
 - **Remove a Task:** Click "Remove" next to a task to delete it.
+
+## License
+This project is licensed under the MIT License.
