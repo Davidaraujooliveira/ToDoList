@@ -1,1 +1,31 @@
-This repository contains a Flask application designed as the backend for a simple to-do list. The application features three endpoints to interact with the to-do list: "GET /api/todos" for fetching all tasks, "POST /api/todos" for adding new tasks, and "DELETE /api/todos/int:task_id" for deleting a task by its ID. Data persistence is achieved through a JSON file, "todo_store.json", serving as the storage mechanism. This setup provides a straightforward API for managing to-do tasks in a persistent manner.
+# ToDo List 📝
+
+The **Simple To-Do List** application helps you manage daily tasks effortlessly by allowing you to add, view, and remove to-do items. It's built with React for the frontend, Flask for the backend, and a JSON file for storage.
+
+## Features
+
+- **Add Tasks:** Quickly add new tasks.
+- **View Tasks:** See all your tasks in an organized list.
+- **Remove Tasks:** Delete tasks once completed.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm
+- Python 3 and pip
+
+### Installation
+
+1. **Clone the repository:**
+
+    ```sh
+    git clone https://github.com/Davidaraujooliveira/ToDoList.git
+    cd ToDoList
+    ```
+
+## Usage
+
+- **Add a Task:** Use the form to input a task description and submit it.
+- **View Tasks:** All tasks are displayed in a list.
+- **Remove a Task:** Click "Remove" next to a task to delete it.
