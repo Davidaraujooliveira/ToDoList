@@ -1,1 +1,1 @@
-# ToDoList
+This repository contains a Flask application designed as the backend for a simple to-do list. The application features three endpoints to interact with the to-do list: "GET /api/todos" for fetching all tasks, "POST /api/todos" for adding new tasks, and "DELETE /api/todos/int:task_id" for deleting a task by its ID. Data persistence is achieved through a JSON file, "todo_store.json", serving as the storage mechanism. This setup provides a straightforward API for managing to-do tasks in a persistent manner.
