@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 
 function ToDoApp() { 
-  const [toDoItems, setToDoItems] = React.useState([]);
+  const [toDoItems, setToDoItems] = useState([]);
 
   const handleAddToDoItem = (item) => { 
-    setToDoItems([...toDoItems, item]);
+    setToDoItems(prevItems => [...prevItems, item]);
   };
 
   return (
@@ -16,15 +17,41 @@ function ToDoApp() {
   );
 }
 
-export default ToDoApp;
+const ToDoList = ({ items }) => (
+  <ul>
+    {items.map((item, index) => (
+      <li key={index}>{item}</li>
+    ))}
+  </ul>
+);
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ToDoApp from './ToDoApp';
+const AddToDoItem = ({ onAdd }) => {
+  const [inputValue, setInputValue] = React.useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+    onAdd(inputValue);
+    setInput15Value('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      />
+      <button type="submit">Add Item</button>
+    </form>
+  );
+};
+
+export default ToDoApp;
 
 ReactDOM.render(
   <React.StrictMode>
-    <ToDoApp />
+    <ToDoData />
   </React.StrictMode>,
   document.getElementById('root')
 );
