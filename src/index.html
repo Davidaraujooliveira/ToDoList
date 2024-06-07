@@ -1,0 +1,27 @@
+import React, { useState } from 'react';
+
+function AddTask({ onAdd }) {
+  const [taskDescription, setTaskDescription] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!taskDescription) return;
+    onAdd(taskDescription);
+    setTaskDescription('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        type="text" 
+        value={taskDescription} 
+        onChange={(e) => setTaskDescription(e.target.value)} 
+        placeholder="Add new task" 
+        required 
+      />
+      <button type="submit">Add Task</button>
+    </form>
+  );
+}
+
+export default AddTask;
