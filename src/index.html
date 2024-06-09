@@ -1,27 +1,54 @@
-import React, { useState } from 'react';
+// AuthorPage.js
+import React from 'react';
 
-function AddTask({ onAdd }) {
-  const [taskDescription, setTaskDescription] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!taskDescription) return;
-    onAdd(taskDescription);
-    setTaskDescription('');
-  };
-
+function AuthorPage() {
   return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        value={taskDescription} 
-        onChange={(e) => setTaskDescription(e.target.value)} 
-        placeholder="Add new task" 
-        required 
-      />
-      <button type="submit">Add Task</button>
-    </form>
+    <div>
+      <h1>About the Author</h1>
+      <p>This to-do list application was created by [Your Name].</p>
+      // Add more information about yourself or the project here
+    </div>
   );
 }
 
-export default AddTask;
+export default AuthorPage;
+```
+```shell
+npm install react-router-dom@6
+```
+```jsx
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import AddTask from './AddTask'; // Assuming AddTask.js is in the same folder
+import AuthorPage from './AuthorPage';
+
+function App() {
+  const onAdd = (taskDescription) => {
+    // Logic to add a task
+    console.log(taskDescription); // Example action
+  };
+
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/author">About the Author</Link>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route path="/" element={<AddTask onAdd={onAdd} />} />
+          <Route path="/author" element={<AuthorPage />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
