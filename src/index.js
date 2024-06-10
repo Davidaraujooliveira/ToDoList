@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-// Main ToDo App Component
 function ToDoApp() {
   const [toDoItems, setToDoItems] = useState([]);
 
-  // Function to add a new item
   const handleAddToDoItem = (item) => {
-    setToDoItems(prevItems => [...prevItems, item]);
+    try {
+      setToDoItems(prevItems => [...prevItems, item]);
+    } catch (error) {
+      console.error('Failed to add item: ', error);
+    }
   };
 
   return (
@@ -19,25 +21,28 @@ function ToDoApp() {
   );
 }
 
-// ToDo List Component for displaying items
 const ToDoList = ({ items }) => (
   <ul>
     {items.map((item, index) => (
-      // Use index as key for simplicity; consider using unique ids for dynamic lists
       <li key={index}>{item}</li>
     ))}
   </ul>
 );
 
-// Component to add a new ToDo item
-const AddToDoSetItem = ({ onAdd }) => {
+const AddToDoItem = ({ onAdd }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!inputValue.trim()) return; // Prevent adding empty entries
-    onAdd(inputValue);
-    setInputValue(''); // Reset input after submission
+    
+    if (!inputValue.trim()) return;
+    
+    try {
+      onAdd(inputValue);
+      setInputValue('');
+    } catch (error) {
+      console.error('Failed to add new todo item: ', error);
+    }
   };
 
   return (
@@ -55,7 +60,7 @@ const AddToDoSetItem = ({ onAdd }) => {
 ReactDOM.render(
   <React.StrictMode>
     <ToDoApp />
-  </React.StrictMode>,
+  </React.StrictSubmode>,
   document.getElementById('root')
 );
 
