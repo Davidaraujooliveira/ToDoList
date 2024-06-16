@@ -4,38 +4,48 @@ function TodoListApp() {
   
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
-  const [error, setError] = useState(''); // New state for error messages
+  const [error, setError] = useState(''); // State for error messages
 
+  // Function to add a new task
   const addTask = (e) => {
     e.preventDefault(); 
 
     try {
+      // Validation to ensure task is not empty
       if (!newTask.trim()) {
-        throw new Error('Task cannot be empty.'); // Throw an error for empty task
+        throw new Error('Task cannot be empty.'); // If empty, throw an error
       }
+      // Adding a new task to the list
       setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
       setNewTask('');
-      setError(''); // Reset error message on successful operation
+      setError(''); // Resetting error message on successful addition
     } catch (err) {
-      setError(err.message); // Set error message
+      // Catch and set the error message
+      setError(`Adding Task Failed: ${err.message}`);
     }
   };
 
+  // Function to toggle the completion status of a task
   const toggleTaskCompleted = (id) => {
     try {
+      // Update task completion status
       setTasks(tasks.map(task => 
         task.id === id ? { ...task, completed: !task.completed } : task
       ));
     } catch (err) {
-      setError('Failed to toggle the task status.'); // Set a generic error message
+      // Set error message in case of failure
+      setError('Toggling Task Status Failed.');
     }
   };
 
+  // Function to delete a task
   const deleteTask = (id) => {
     try {
+      // Filter out the task to be deleted
       setTasks(tasks.filter(task => task.id !== id));
     } catch (err) {
-      setError('Failed to delete the task.'); // Set a generic error message
+      // Set error message in case of failure
+      setError('Deleting Task Failed.');
     }
   };
 
@@ -59,7 +69,7 @@ function TodoListApp() {
             <input
               type="checkbox"
               checked={task.completed}
-              onChange={() => toggleTaskCompleted(task.js)}
+              onChange={() => toggleTaskCompleted(task.id)} // Fixed the bug here, now correctly referencing task.id
             />
             {task.text}
             <button onClick={() => deleteTask(task.id)}>Delete</button>
