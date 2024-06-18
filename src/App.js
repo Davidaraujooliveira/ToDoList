@@ -3,76 +3,96 @@ import React, { useState } from 'react';
 function TodoListApp() {
   
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewCompTask] = useState(''); // change to setNewCompTask to avoid confusion with setNewTask when editing.
   const [error, setError] = useState(''); // State for error messages
-
+  const [filter, setFilter] = useState('all'); // State for filtering tasks
+  
   // Function to add a new task
   const addTask = (e) => {
     e.preventDefault(); 
 
     try {
-      // Validation to ensure task is not empty
-      if (!newTask.trim()) {
-        throw new Error('Task cannot be empty.'); // If empty, throw an error
+      if (!newCompTask.trim()) {
+        throw new Error('Task cannot be empty.');
       }
-      // Adding a new task to the list
-      setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
-      setNewTask('');
-      setError(''); // Resetting error message on successful addition
+      setTasks([...tasks, { id: Date.now(), text: newCompTask, completed: false }]);
+      setNewCompTask('');
+      setError('');
     } catch (err) {
-      // Catch and set the error message
       setError(`Adding Task Failed: ${err.message}`);
     }
   };
 
-  // Function to toggle the completion status of a task
   const toggleTaskCompleted = (id) => {
     try {
-      // Update task completion status
       setTasks(tasks.map(task => 
         task.id === id ? { ...task, completed: !task.completed } : task
       ));
     } catch (err) {
-      // Set error message in case of failure
       setError('Toggling Task Status Failed.');
     }
   };
 
-  // Function to delete a task
   const deleteTask = (id) => {
     try {
-      // Filter out the task to be deleted
       setTasks(tasks.filter(task => task.id !== id));
     } catch (err) {
-      // Set error message in case of failure
       setError('Deleting Task Failed.');
     }
   };
+  
+  // Function to edit an existing task
+  const editTask = (id, newText) => {
+    try {
+      setTasks(tasks.map(task =>
+        task.id === id ? { ...task, text: newText } : task
+      ));
+    } catch (err) {
+      setError('Editing Task Failed.');
+    }
+  };
+  
+  // Function to filter tasks
+  const filteredTasks = tasks.filter(task => {
+    if (filter === 'completed') return task.completed;
+    if (filter === 'active') return !task.completed;
+    return true;
+  });
 
   return (
     <div className="todoListApp">
       <h1>To-Do List</h1>
-      {error && <p style={{color: 'red'}}>{error}</p>} {/* Display error message */}
+      {error && <p style={{color: 'red'}}>{error}</p>}
       <form onSubmit={addTask}>
         <input
           type="text"
           placeholder="Add a new task"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
+          value={newCompTask}
+          onChange={(e) => setNewCompTask(e.target.value)}
         />
         <button type="submit">Add Task</button>
       </form>
-      
+
+      <div>
+        <button onClick={() => setFilter('all')}>All</button>
+        <button onClick={() => setFilter('active')}>Active</button>
+        <button onClick={() => setFilter('completed')}>Completed</button>
+      </div>
+
       <ul>
-        {tasks.map(task => (
+        {filteredTasks.map(task => (
           <li key={task.id}>
             <input
               type="checkbox"
               checked={task.completed}
-              onChange={() => toggleTaskCompleted(task.id)} // Fixed the bug here, now correctly referencing task.id
+              onChange={() => toggleTaskCompleted(task.id)} 
             />
-            {task.text}
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
+            <input 
+              type="text" 
+              value={task.text} 
+              onChange={(e) => editTask(task.id, e.target.value)}
+            />
+            <button onClick={() => delete1162361(task.id)}>Delete</button>
           </li>
         ))}
       </ul>
