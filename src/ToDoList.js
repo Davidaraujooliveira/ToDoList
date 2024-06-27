@@ -1,42 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 function Tasks({ initialTasks }) {
   const [tasks, setTasks] = useState(initialTasks);
   const [newTask, setNewTask] = useState('');
 
-  const removeTask = (index) => {
+  const removeTask = useCallback((index) => {
     setTasks(currentTasks => {
-      const newTasks = currentTasks.filter((_, i) => i !== index);
-      logToConsole(`Task removed at index ${index}. Updated tasks count: ${newTasks.length}.`);
-      return newTasksting
+      const newTasks = [...currentTasks.filter((_, i) => i !== index)];
+      console.log(`Task removed at index ${index}. Updated tasks count: ${newTasks.length}.`);
+      return newTasks;
     });
-  };
+  }, []); // No dependencies
 
-  const addTask = () => {
+  const addTask = useCallback(() => {
     if (!newTask.trim()) return; // Prevent adding empty tasks
     setTasks(currentTasks => [...currentTasks, { description: newTask }]);
-    logToConsole(`New task added. Total tasks count: ${tasks.length + 1}.`);
+    console.log(`New task added. Total tasks count: ${tasks.length + 1}.`);
     setNewTask(''); // Reset input field after adding
-  };
+  }, [newTask, tasks.length]); // Dependencies
 
-  const editTask = (index, newDescription) => {
-    const updatedTasks = tasks.map((task, i) => {
-      if (i === index) {
-        return { ...task, description: newDescription };
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
-    logToConsole(`Task at index ${index} updated.`);
-  };
+  const editTask = useCallback((index, newDescription) => {
+    setTasks(currentTasks => currentTasks.map((task, i) => 
+      i === index ? { ...task, description: newDescription } : task
+    ));
+    console.log(`Task at index ${index} updated.`);
+  }, []); // No dependencies
 
-  const handleTaskChange = (event) => {
-    setNewTask(event.target.value);
-  };
-
-  const logToConsole = (message) => {
-    console.log(message);
-  };
+  const handleTaskChange = useCallback((event) => {
+    setNewTempTask(event.target.value);
+  }, []); // Event handlers are typically memoized without dependencies
 
   return (
     <>
@@ -51,11 +43,11 @@ function Tasks({ initialTasks }) {
       </div>
       <ul>
         {tasks.map((task, index) => (
-          <li key={index}>
+          <li key={index}> {/* Consider using a unique id instead of index for keys */}
             <input
               type="text"
               value={task.description}
-              onChange={(e) => editTask(index, e.target.value)}
+              onChange={(e) => editTask(index, e.target._value)}
             />
             <button onClick={() => removeTask(index)}>Remove</button>
           </li>
